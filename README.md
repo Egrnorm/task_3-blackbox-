@@ -1,5 +1,5 @@
 
-### Для запуска  
+### Запуск  
 1. ##### Клонируем репозиторий:  
 - `git clone https://github.com/Egrnorm/task_blackbox-exporter.git`  
 2. ##### Переходим в папку:  

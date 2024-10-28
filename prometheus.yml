@@ -1,0 +1,105 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: 'https_check'
+    metrics_path: /probe
+    params:
+      module: [https_check]
+    static_configs:
+        - targets:
+          - "ptsecurity.com"
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: localhost:9115
+
+  - job_name: 'tcp_connect_check'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect_check]
+    static_configs:
+        - targets:
+          - "ptsecurity.com:443"
+          - "ptsecurity.com:80"
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: localhost:9115
+
+  - job_name: 'icmp_check'
+    metrics_path: /probe
+    params:
+      module: [icmp_check]
+    static_configs:
+        - targets:
+          - "ptsecurity.com"
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: localhost:9115
+
+  - job_name: 'domain_in_dns_check'
+    metrics_path: /probe
+    params:
+      module: [domain_in_dns_check]
+    static_configs:
+        - targets:
+          - "8.8.8.8" #В идеале должны указываться не общедоступные днс сервера, а свои
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: localhost:9115
+
+  - job_name: 'is_ip_change_check'
+    metrics_path: /probe
+    params:
+      module: [domain_in_dns_check]
+    static_configs:
+        - targets:
+          - "8.8.8.8" #В идеале должны указываться не общедоступные днс сервера, а свои. А также если у домена санкционированно изменился адрес, то нужно отредактировать в blackbox.yml этот модуль
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: localhost:9115
+
+  - job_name: 'security_headers_check'
+    metrics_path: /probe
+    params:
+      module: [security_headers_check]
+    static_configs:
+        - targets:
+          - "ptsecurity.com"
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - target_label: __address__
+        replacement: localhost:9115

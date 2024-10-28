@@ -1,0 +1,54 @@
+modules:
+
+  https_check: #Проверяет работает ли сайт на htpps
+    prober: http
+    timeout: 5s
+    http:
+      valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+      method: GET
+      follow_redirects: true
+      fail_if_not_ssl: true
+      tls_config:
+        insecure_skip_verify: false
+
+  tcp_connect_check: #Проверяет тцп порты
+    prober: tcp
+    timeout: 5s
+
+  icmp_check: #Проверяет через пинг доступность сайта
+    prober: icmp
+    timeout: 5s
+
+  domain_in_dns_check: #Проверяет наличие домена в днс сервере. На вход подаётся ip днс сервера
+    prober: dns
+    timeout: 5s
+    dns:
+      query_name: "ptsecurity.com"
+      query_type: "A"
+      preferred_ip_protocol: "ip4"
+      valid_rcodes: ["NOERROR"]
+
+  is_ip_change_check: #Проверяет сменился ли ip у ptsecurity от установленного 178.248.238.30 в днс сервере который подаётся на входе
+    prober: dns
+    timeout: 5s
+    dns:
+      query_name: "ptsecurity.com"
+      query_type: "A"
+      preferred_ip_protocol: "ip4"
+      valid_rcodes: ["NOERROR"]
+      validate_answer_rrs:
+        fail_if_matches_regexp:
+          - "178.248.238.30"
+
+  security_headers_check: #Проверяет есть ли в ответе сервера заголовки безопасности
+      prober: http
+      timeout: 5s
+      http:
+        method: GET
+        fail_if_header_not_matches:
+          - header: X-XSS-Protection
+            regexp: "1; mode=block"        
+          - header: X-Content-Type-Options
+            regexp: "nosniff"
+          - header: Strict-Transport-Security
+            regexp: "max-age=[0-9]+; includeSubdomains"

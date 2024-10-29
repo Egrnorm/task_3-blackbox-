@@ -3,9 +3,9 @@
 1. ##### Клонируем репозиторий:  
 - `git clone https://github.com/Egrnorm/task_blackbox-exporter.git`  
 2. ##### Скачиваем Git LFS для корректного запуска бинарных файлов  
-  Для Debian:  
-  - `sudo apt install git-lfs`
-  Для Fedora:  
+Для Debian:  
+  - `sudo apt install git-lfs`  
+Для Fedora:  
   - `sudo dnf install git-lfs`  
 3. ##### Переходим в папку:  
 - `cd task_blackbox-exporter`  

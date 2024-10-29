@@ -41,7 +41,7 @@ else
     PROMETHEUS_PID=""  # Очистка переменной PID
 fi
 
-echo "Для выхода из программы нажмите CTRL + C"
+echo "Для закрытия Prometheus и Blackbox Exporter нажмите CTRL + C"
 
 if [ -n "$BLACKBOX_PID" ]; then
     wait "$BLACKBOX_PID"

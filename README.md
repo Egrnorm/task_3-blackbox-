@@ -2,8 +2,15 @@
 ### Запуск  
 1. ##### Клонируем репозиторий:  
 - `git clone https://github.com/Egrnorm/task_blackbox-exporter.git`  
-2. ##### Переходим в папку:  
+2. ##### Скачиваем Git LFS для корректного запуска бинарных файлов  
+  Для Debian:  
+  - `sudo apt install git-lfs`  
+  Для Fedora:  
+  - `sudo dnf install git-lfs`  
+3. ##### Переходим в папку:  
 - `cd task_blackbox-exporter`  
+4. ##### Активация загрузки больших файлов:  
+- `git lfs pull`  
 3. ##### Запускаем скрипт, который автоматизирует процесс запуска BlackBox exporter и Prometheus:
 - `sudo ./start.sh`  
 4. #### Теперь Prometheus доступен по адресу

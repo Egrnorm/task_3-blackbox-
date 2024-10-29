@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cleanup() {
-    echo "Завершение процессов..."
+    echo "Завершение процессов"
     #Проверяет если значение не пустое и удалось убить процесс
     if [ -n "$BLACKBOX_PID" ]; then
       echo "Blackbox Exporter завершён"
